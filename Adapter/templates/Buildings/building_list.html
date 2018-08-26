@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Guidance Management System</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        {% if buildings %}
+        <ul>
+        {% for building in buildings %}
+            <!-- <li><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</a></li> -->
+            <!-- <li>{{building.building_name}}</li> -->
+            <div class="card bg-info text-white">
+                    <div class="card-body">{{building.building_name}}</div>
+                  </div>
+        {% endfor %}
+        </ul>
+
+        {% else %}
+            <p>{{message}}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
