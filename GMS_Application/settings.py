@@ -25,7 +25,7 @@ SECRET_KEY = '-z%i-a!)(r%()+hs_9ar6huk_!s*1+kd24=!+=44pie4-ua&f8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['18.218.3.50']
 
 
 # Application definition
@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'DEV_GMS_Application',
         'USER': 'root',
         'PASSWORD': 'Peungsook1840%',
-        'HOST': 'gms.parka028.me',
+        'HOST': '18.218.3.50',
         'PORT': '3306',
     }
 }
