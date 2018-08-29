@@ -17,8 +17,8 @@
             <!-- <li><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</a></li> -->
             <!-- <li>{{building.building_name}}</li> -->
             <div class="card bg-info text-white">
-                    <div class="card-body">{{building.building_name}}</div>
-                  </div>
+                <div class="card-body">{{building.building_name}} {{building.use}} {{building.available_parking}} {{building.total_parking}}</div>
+            </div><br>
         {% endfor %}
         </ul>
 

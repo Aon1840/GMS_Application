@@ -9,4 +9,4 @@ class Building(models.Model):
         return self.building_name
 
     class Meta:
-        ordering = ('-building_id',)
+        ordering = ('building_id',)
