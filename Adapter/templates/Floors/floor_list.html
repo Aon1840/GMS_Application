@@ -11,16 +11,14 @@
 </head>
 <body>
     <div class="container">
-        {% if buildings %}
+        {% if floors %}
         <ul>
-        {% for building in buildings %}
-            <!-- <li><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</a></li> -->
-            <!-- <li>{{building.building_name}}</li> -->
+        {% for floor in floors %}
             <br>
-            <form method="GET" action="/floors/getAllFloor/{{building.building_id}}">
-                <a href="/floors/{{building.building_id}}" ><button type="button" class="btn btn-outline-info btn-block">{{building.building_name}} {{building.use}} {{building.available_parking}} {{building.total_parking}}</button></a>
-                <input  type="hidden" formaction="/floors/getAllFloor/{{building.building_id}}">
-            </form><br>
+            <button type="button" class="btn btn-outline-info btn-block">{{ floor.floor_id }} {{floor.floor_name}}</button>
+                <!-- <div class="card-body">{{building.building_name}} {{building.use}} {{building.available_parking}} {{building.total_parking}}</div> -->
+                <!-- <div class="card-body"><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</div> -->
+            <br>
         {% endfor %}
         </ul>
 

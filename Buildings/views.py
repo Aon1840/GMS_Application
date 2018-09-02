@@ -13,16 +13,21 @@ import json
 @csrf_exempt
 def getAllBuilding(request):
     try:
-        buildings = _getBuilding
-        message = None
-    except:
-        message = "Do not have a building now."
+        buildings = _getAllBuilding()
 
-    if request.method == 'GET':
-        context = {
-            'buildings': buildings,
-            'message': message
-        }
+        if buildings.count() > 0:
+            message = None
+        else:
+            buildings = None
+            message = "Do not have a building now."
+    except:
+        buildings = None
+        message = "Does not Exits"
+
+    context = {
+        'buildings': buildings,
+        'message': message
+    }
     return render(request, 'Buildings/building_list.html', context)
 
 
@@ -43,11 +48,16 @@ def getAvailableAllBuilding(request):
         ON z.zone_id = p.zone_id
         GROUP BY b.building_name
         ORDER BY b.building_id""")
-        message = None
+        
+        if cursor.count() > 0:
+            message = None
+        else:
+            items = None
+            message = "Do not have a building now."
 
     except:
         items = None
-        message = "Do not have a building now."
+        message = "Does not Exits"
 
     items = []
     for row in cursor:
@@ -112,10 +122,15 @@ def deleteBuildingById(request, building_id):
 @csrf_exempt
 def getBuildings(request):
     try:
-        buildings = Building.objects.all()
+        buildings = _getAllBuilding()
         message = None
+        if buildings.count() > 0:
+            message = None
+        else:
+            buildings = None
+            message = "Do not have a building now"
     except:
-        message = "Do not have a building now."
+        message = "Does not Exits"
 
     if request.method == 'GET':
         serializer = BuildingSerializer(buildings, many=True)
@@ -127,10 +142,20 @@ def getBuildings(request):
 
 
 # Private Method
-def _getBuilding(building_id=None):
+def _getBuilding(building_id):
     if(building_id != None):
-        building = Building.objects.get(building_id=building_id)
-    else:
-        building = Building.objects.all()
+        try:
+            buildings = Building.objects.get(building_id=building_id)
+        except Exception as e:
+            return HttpResponse(e)
 
-    return building
+    return buildings
+
+
+def _getAllBuilding():
+    try:
+        buildings = Building.objects.all()
+    except Exception as e:
+        return HttpResponse(e)
+
+    return buildings
