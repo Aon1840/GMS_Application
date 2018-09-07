@@ -25,7 +25,6 @@ def getZones(request, floor_id):
         if zone.count() > 0:
             message = None
         else:
-            zone = None
             message = "Do not have a Zone now."
     except Exception as e:
         message = "Does not Exits." 

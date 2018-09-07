@@ -11,4 +11,4 @@ class Zone(models.Model):
         return self.zone_name
 
     class Meta:
-        ordering = ('-zone_id',)
+        ordering = ('zone_id',)

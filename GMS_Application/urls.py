@@ -21,4 +21,5 @@ urlpatterns = [
     path('buildings/', include('Buildings.urls')),
     path('floors/', include('Floors.urls')),
     path('zones/', include('Zones.urls')),
+    path('positions/', include('Positions.urls')),
 ]

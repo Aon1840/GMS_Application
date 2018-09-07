@@ -16,4 +16,4 @@ class Position(models.Model):
         return self.position_name
 
     class Meta:
-        ordering = ('-position_id',)
+        ordering = ('position_id',)

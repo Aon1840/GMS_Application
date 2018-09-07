@@ -127,7 +127,6 @@ def getBuildings(request):
         if buildings.count() > 0:
             message = None
         else:
-            buildings = None
             message = "Do not have a building now"
     except:
         message = "Does not Exits"

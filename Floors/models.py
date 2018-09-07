@@ -11,4 +11,4 @@ class Floor(models.Model):
         return self.floor_name
 
     class Meta:
-        ordering = ('-floor_id',)
+        ordering = ('floor_id',)
