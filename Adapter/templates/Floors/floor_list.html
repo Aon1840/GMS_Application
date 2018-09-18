@@ -10,21 +10,28 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark .justify-content-center">
+        <a class="navbar-brand" href="/buildings/">Guidance Management System</a>
+    </nav>
+
     <div class="container">
         {% if floors %}
-        <ul>
+        <br>
+            <h3><a href="/buildings/">14 Floor building</a>/</h3>
+        <hr>
+
+        <div class="list-group text-center">
         {% for floor in floors %}
-            <br>
-            <button type="button" class="btn btn-outline-info btn-block">{{ floor.floor_id }} {{floor.floor_name}}</button>
-                <!-- <div class="card-body">{{building.building_name}} {{building.use}} {{building.available_parking}} {{building.total_parking}}</div> -->
-                <!-- <div class="card-body"><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</div> -->
-            <br>
+            <a href="/positions/getAvailablePosition/{{floor.floor_id}}" class="list-group-item list-group-item-action text-center">
+                {{floor.floor_name}}
+            </a>
         {% endfor %}
-        </ul>
+        </div>
 
         {% else %}
             <p>{{message}}</p>
         {% endif %}
+        <br>
     </div>
 </body>
 </html>

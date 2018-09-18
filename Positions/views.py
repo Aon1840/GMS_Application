@@ -13,11 +13,95 @@ from django.db import connection
 import json
 
 # For Web Application
+@csrf_exempt
+def getAvailablePosition(request, floor_id):
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""select p.position_id, p.position_name,
+        sum(p.is_available) as 'is_available',
+        z.zone_name,
+        f.floor_id,
+        f.floor_name,
+        b.building_id,
+        b.building_name
+        from Buildings_building b join Floors_floor f 
+        on b.building_id = f.building_id
+        join Zones_zone z
+        on f.floor_id = z.floor_id
+        join Positions_position p
+        on z.zone_id = p.zone_id
+        where f.floor_id = %s
+        group by p.position_id
+        order by p.position_id""", [floor_id])
+
+    except:
+        return HttpResponse("Hello from exception")
+
+    items = []
+    for row in cursor:
+        items.append({
+            'position_id': row[0],
+            'position_name': row[1],
+            'available_parking': int(row[2]),
+            'zone_name': row[3],
+            'floor_id': row[4],
+            'floor_name': row[5],
+            'building_id': row[6],
+            'building_name': row[7],
+        })
+
+    context = {
+        'position': items,
+    }
+
+    return render(request, 'Floors/floor_detail_10B.html', context)
 
 
 
 # Service For Admin (Use Postman)
+@csrf_exempt
+def checkAvailablePosition(request, floor_id):
+    try:
+        cursor = connection.cursor()
+        cursor.execute("""select p.position_id, p.position_name,
+        sum(p.is_available) as 'is_available',
+        z.zone_name,
+        f.floor_id,
+        f.floor_name,
+        b.building_id,
+        b.building_name
+        from Buildings_building b join Floors_floor f 
+        on b.building_id = f.building_id
+        join Zones_zone z
+        on f.floor_id = z.floor_id
+        join Positions_position p
+        on z.zone_id = p.zone_id
+        where f.floor_id = %s
+        group by p.position_id
+        order by p.position_id""", [floor_id])
 
+
+    except:
+        return HttpResponse("Hello from exception")
+
+    items = []
+    for row in cursor:
+        items.append({
+            'position_id': row[0],
+            'position_name': row[1],
+            'available_parking': int(row[2]),
+            'zone_name': row[3],
+            'floor_id': row[4],
+            'floor_name': row[5],
+            'building_id': row[6],
+            'building_name': row[7],
+        })
+
+    context = {
+        'position': items,
+    }
+
+    return JsonResponse(context)
 
 
 # For Mobile Application

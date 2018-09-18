@@ -4,7 +4,8 @@ from Buildings import views
 
 urlpatterns = [
     # For Web
-    path('', views.getAllBuilding, name='getAllBuilding'),
+    # path('', views.getAllBuilding, name='getAllBuilding'),
+    path('', views.getAvailableAllBuilding, name='getAllBuilding'),
 
     # Service For Admin
     path('addNewBuilding', views.addNewBuilding, name='addNewBuilding'),

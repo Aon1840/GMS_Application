@@ -10,22 +10,27 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark .justify-content-center">
+        <a class="navbar-brand" href="/buildings/">Guidance Management System</a>
+    </nav>
     <div class="container">
         {% if buildings %}
-        <ul>
+        
+        <br>
+        <h2>List Building in Guidance Management System</h2>
+        <br>
+        
+        <div class="list-group">
         {% for building in buildings %}
-            <!-- <li><a href="/detail/{{floor.floor_id}}">{{ floor.floor_id }} {{floor.floor_name}}</a></li> -->
-            <!-- <li>{{building.building_name}}</li> -->
-            <br>
-            <form method="GET" action="/floors/getAllFloor/{{building.building_id}}">
-                <a href="/floors/{{building.building_id}}" ><button type="button" class="btn btn-outline-info btn-block">{{building.building_name}} {{building.use}} {{building.available_parking}} {{building.total_parking}}</button></a>
-                <input  type="hidden" formaction="/floors/getAllFloor/{{building.building_id}}">
-            </form><br>
+            <a href="/floors/{{building.building_id}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                {{building.building_name}}
+                <span class="badge badge-primary badge-pill">{{building.available_parking}}</span>
+            </a>
         {% endfor %}
-        </ul>
+        </div>
 
         {% else %}
-            <p>{{message}}</p>
+            <div class="container text-center">{{message}}</div>
         {% endif %}
     </div>
 </body>

@@ -9,7 +9,7 @@ from Adapter.serializers import BuildingSerializer
 from django.db import connection
 import json
 
-# For Web Application
+# ---------------------------------- For Web Application ----------------------------------
 @csrf_exempt
 def getAllBuilding(request):
     try:
@@ -76,7 +76,7 @@ def getAvailableAllBuilding(request):
     return render(request, 'Buildings/building_list.html', context)
 
 
-# Service For Admin (Use Postman)
+# ---------------------------------- Service For Admin (Use Postman) ----------------------------------
 @csrf_exempt
 def addNewBuilding(request):
     if request.method == 'POST':
@@ -118,7 +118,7 @@ def deleteBuildingById(request, building_id):
         return HttpResponse("Delete Success")
 
 
-# For Mobile Application
+# ---------------------------------- For Mobile Application ----------------------------------
 @csrf_exempt
 def getBuildings(request):
     try:
@@ -140,7 +140,7 @@ def getBuildings(request):
         return JsonResponse(context)
 
 
-# Private Method
+# ---------------------------------- Private Method ----------------------------------
 def _getBuilding(building_id):
     if(building_id != None):
         try:
