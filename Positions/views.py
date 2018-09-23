@@ -11,6 +11,9 @@ from Buildings.models import Building
 from Adapter.serializers import PositionSerializer
 from django.db import connection
 import json
+import time
+import datetime
+import requests
 
 # For Web Application
 @csrf_exempt
@@ -80,7 +83,6 @@ def checkAvailablePosition(request, floor_id):
         group by p.position_id
         order by p.position_id""", [floor_id])
 
-
     except:
         return HttpResponse("Hello from exception")
 
@@ -105,26 +107,6 @@ def checkAvailablePosition(request, floor_id):
 
 
 # For Mobile Application
-# def getPositionsByFloor(request, floor_id):
-#     try:
-#         positions = _getAllPositionByFloor(floor_id=floor_id)
-
-#         if positions.count() > 0:
-#             message = None
-#         else:
-#             message = "Do not have a Position now."
-#     except Exception as e:
-#         message = "Does not Exits." 
-
-#     if request.method == 'GET':
-#         serializer = PositionSerializer(positions, many=True)
-#         context = {
-#             'zones': serializer.data,
-#             'message': message
-#         }
-
-#     return JsonResponse(context)
-
 def getPositionDetail(request, position_id):
     try:
         position = _getPosition(position_id=position_id)
@@ -153,7 +135,6 @@ def getPositionDetail(request, position_id):
         return JsonResponse(context) 
 
 
-
 def getPositionsByFloor(request, floor_id):
     try:
         positions = _getAllPositionByFloor(floor_id=floor_id)
@@ -167,7 +148,46 @@ def getPositionsByFloor(request, floor_id):
     return JsonResponse(serializer.data, safe=False)
 
 
+@csrf_exempt
+@api_view(['PUT'])
+def carParking(request, position_id):
+    position = _getPosition(position_id=position_id)
+    if request.method == 'PUT':
+        statusChange = request.data['is_available']
+        position.is_available = statusChange
+        position.save()
+        t1 = datetime.datetime.now()
+ 
+        serializer = PositionSerializer(position)
+        t2 = datetime.datetime.now()
+
+        # Save log in Parka Application Server
+        _saveLogPosition(position_id=position_id, status=statusChange)
+        t3 = datetime.datetime.now()
+
+        print("--------", t1)
+        print("--------", t2)
+        print("--------", t3)
+
+        return JsonResponse(serializer.data)
+
+        
 # Private Method
+def _saveLogPosition(position_id, status):
+    if position_id != None and status != None:
+        path = 'http://localhost:8000/users/saveLog/%s/' % position_id
+        status = status
+        print("----- status: ",status)
+
+        if status == "False":
+            print("------ pass this line")
+            position = requests.post(path, data={'isChangeTo':status})
+        
+        # requests.post('http://httpbin.org/post', data = {'key':'value'})
+
+        return print("Save log position success!")
+
+
 def _getPosition(position_id):
     if position_id != None:
         try:

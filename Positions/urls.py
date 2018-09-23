@@ -12,4 +12,5 @@ urlpatterns = [
     # For Mobile
     path('getAllPositionByFloor/<floor_id>', views.getPositionsByFloor, name='getPositionsByFloor'),
     path('<position_id>/getPositionDetail', views.getPositionDetail, name='getPositionDetail'),
+    path('<position_id>/parking', views.carParking, name='carParking'),
 ]
