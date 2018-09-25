@@ -59,7 +59,7 @@ class ZoneSerializer(serializers.ModelSerializer):
 class PositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Position
-        fields = ('position_id','position_name','is_available','x_position','y_position','height_scope','width_scope','zone')
+        fields = ('position_id','position_name','is_available','x_position','y_position','height_scope','width_scope','zone','timeChange')
 
     def create(self, validated_data):
         return Position.objects.create(**validated_data)
@@ -67,6 +67,7 @@ class PositionSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.position_name = validated_data.get('position_name',instance.position_name)
         instance.is_available = validated_data.get('is_available',instance.is_available)
+        instance.timeChange = validated_data.get('timeChange',instance.timeChange)
         instance.save()
 
         return instance

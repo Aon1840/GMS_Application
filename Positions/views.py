@@ -155,19 +155,16 @@ def carParking(request, position_id):
     if request.method == 'PUT':
         statusChange = request.data['is_available']
         position.is_available = statusChange
-        position.save()
-        t1 = datetime.datetime.now()
- 
-        serializer = PositionSerializer(position)
-        t2 = datetime.datetime.now()
 
+        time = datetime.datetime.now()
+        position.timeChange = time
+        print("----- t1: ",time)
+
+        position.save()
+        serializer = PositionSerializer(position)
+        
         # Save log in Parka Application Server
         _saveLogPosition(position_id=position_id, status=statusChange)
-        t3 = datetime.datetime.now()
-
-        print("--------", t1)
-        print("--------", t2)
-        print("--------", t3)
 
         return JsonResponse(serializer.data)
 
@@ -176,14 +173,36 @@ def carParking(request, position_id):
 def _saveLogPosition(position_id, status):
     if position_id != None and status != None:
         path = 'http://localhost:8000/users/saveLog/%s/' % position_id
-        status = status
-        print("----- status: ",status)
+        print("----- path:", path)
 
-        if status == "False":
-            print("------ pass this line")
-            position = requests.post(path, data={'isChangeTo':status})
+        positionObj = Position.objects.get(position_id=position_id)
+        print("----- positionObj", positionObj)
+        x = positionObj.x_position
+        print("------ x: ",x)
+        y = positionObj.y_position
+        print("------ y: ",y)
+        width = positionObj.width_scope
+        print("------ widht: ",width)
+        height = positionObj.height_scope
+        print("------ height: ",height)
+        time = positionObj.timeChange
+
+        # Check if status == 'False' then call service
+        # if status == "False":
+        #     print("------ pass this line")
+        #     position = requests.post(path, data={'isChangeTo':status})
         
-        # requests.post('http://httpbin.org/post', data = {'key':'value'})
+        position = requests.post(path, data={
+            'isChangeTo':status,
+            'x_position':x,
+            'y_position':y,
+            'width_scope':width,
+            'height_scope':height,
+            'timeChange':time,})
+
+        print("------ position: ",position.text)
+
+        print("------ Pass this line")
 
         return print("Save log position success!")
 

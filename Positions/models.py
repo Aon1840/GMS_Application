@@ -11,6 +11,7 @@ class Position(models.Model):
     width_scope = models.FloatField(blank=False, null=False, default=0.0)
     height_scope = models.FloatField(blank=False, null=False, default=0.0)
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
+    timeChange = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.position_name
