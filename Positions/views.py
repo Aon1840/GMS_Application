@@ -176,28 +176,25 @@ def _saveLogPosition(position_id, status):
         print("----- path:", path)
 
         positionObj = Position.objects.get(position_id=position_id)
-        print("----- positionObj", positionObj)
         x = positionObj.x_position
-        print("------ x: ",x)
         y = positionObj.y_position
-        print("------ y: ",y)
         width = positionObj.width_scope
-        print("------ widht: ",width)
         height = positionObj.height_scope
-        print("------ height: ",height)
         time = positionObj.timeChange
 
-        # Check if status == 'False' then call service
-        # if status == "False":
-        #     print("------ pass this line")
-        #     position = requests.post(path, data={'isChangeTo':status})
-        
+        # Get FloorId
+        zone = Zone.objects.get(zone_id=positionObj.zone_id)
+        print("---- zone:", zone)
+        floor_id =  zone.floor_id
+        print("---- floor_id", floor_id)
+
         position = requests.post(path, data={
             'isChangeTo':status,
             'x_position':x,
             'y_position':y,
             'width_scope':width,
             'height_scope':height,
+            'floor_id':floor_id,
             'timeChange':time,})
 
         print("------ position: ",position.text)
