@@ -172,8 +172,8 @@ def carParking(request, position_id):
 # Private Method
 def _saveLogPosition(position_id, status):
     if position_id != None and status != None:
-        # path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
-        path = 'http://localhost:8000/users/saveLog/%s/' % position_id
+        path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
+        # path = 'http://localhost:8000/users/saveLog/%s/' % position_id
         print("----- path:", path)
 
         positionObj = Position.objects.get(position_id=position_id)
