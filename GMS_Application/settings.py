@@ -25,8 +25,8 @@ SECRET_KEY = '-z%i-a!)(r%()+hs_9ar6huk_!s*1+kd24=!+=44pie4-ua&f8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['gms.parka028.me']
-# ALLOWED_HOSTS = ['localhost']
+# ALLOWED_HOSTS = ['gms.parka028.me']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition

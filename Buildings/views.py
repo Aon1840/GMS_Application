@@ -13,7 +13,7 @@ import json
 @csrf_exempt
 def getAllBuilding(request):
     try:
-        buildings = _getAllBuilding()
+        buildings = _getBuilding()
 
         if buildings.count() > 0:
             message = None
@@ -141,14 +141,14 @@ def getBuildings(request):
 
 
 # ---------------------------------- Private Method ----------------------------------
-def _getBuilding(building_id):
-    if(building_id != None):
-        try:
-            buildings = Building.objects.get(building_id=building_id)
-        except Exception as e:
-            return HttpResponse(e)
+# def _getBuilding(building_id):
+#     if(building_id != None):
+#         try:
+#             buildings = Building.objects.get(building_id=building_id)
+#         except Exception as e:
+#             return HttpResponse(e)
 
-    return buildings
+#     return buildings
 
 
 def _getAllBuilding():
@@ -158,3 +158,12 @@ def _getAllBuilding():
         return HttpResponse(e)
 
     return buildings
+
+def _getBuilding(building_id):
+    if building_id != None:
+        building = Building.objects.get(building_id=building_id)
+    else:
+        building = Building.objects.all()
+
+    return building
+

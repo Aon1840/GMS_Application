@@ -10,6 +10,8 @@ class Position(models.Model):
     y_position = models.FloatField(blank=False, null=False, default=0.0)
     width_scope = models.FloatField(blank=False, null=False, default=0.0)
     height_scope = models.FloatField(blank=False, null=False, default=0.0)
+    avg_x = models.FloatField(blank=False, null=False, default=0.0)
+    avg_y = models.FloatField(blank=False, null=False, default=0.0)
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE)
     timeChange = models.DateTimeField(auto_now_add=True)
 

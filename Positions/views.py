@@ -172,6 +172,7 @@ def carParking(request, position_id):
 # Private Method
 def _saveLogPosition(position_id, status):
     if position_id != None and status != None:
+        # path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
         path = 'http://localhost:8000/users/saveLog/%s/' % position_id
         print("----- path:", path)
 
@@ -181,6 +182,8 @@ def _saveLogPosition(position_id, status):
         width = positionObj.width_scope
         height = positionObj.height_scope
         time = positionObj.timeChange
+        avg_x = positionObj.avg_x
+        avg_y = positionObj.avg_y
 
         # Get FloorId
         zone = Zone.objects.get(zone_id=positionObj.zone_id)
@@ -194,6 +197,8 @@ def _saveLogPosition(position_id, status):
             'y_position':y,
             'width_scope':width,
             'height_scope':height,
+            'avg_x':avg_x,
+            'avg_y':avg_y,
             'floor_id':floor_id,
             'timeChange':time,})
 
