@@ -174,6 +174,7 @@ def _saveLogPosition(position_id, status):
     if position_id != None and status != None:
         path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
         # path = 'http://localhost:8000/users/saveLog/%s/' % position_id
+        # path = 'http://172.20.118.161:8000/users/saveLog/%s/' % position_id
         print("----- path:", path)
 
         positionObj = Position.objects.get(position_id=position_id)
