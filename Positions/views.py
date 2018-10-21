@@ -153,7 +153,9 @@ def getPositionsByFloor(request, floor_id):
 def carParking(request, position_id):
     position = _getPosition(position_id=position_id)
     if request.method == 'PUT':
-        statusChange = request.data['is_available']
+        # statusChange = request.data['is_available']
+        statusChange = False
+        user_assign = request.data['user_assign']
         position.is_available = statusChange
 
         time = datetime.datetime.now()
@@ -164,16 +166,39 @@ def carParking(request, position_id):
         serializer = PositionSerializer(position)
         
         # Save log in Parka Application Server
-        _saveLogPosition(position_id=position_id, status=statusChange)
+        _saveLogPosition(position_id=position_id, status=statusChange, user_assign=user_assign)
 
         return JsonResponse(serializer.data)
 
+
+@csrf_exempt
+@api_view(['PUT'])
+def carDriveOut(request, position_id):
+    position = _getPosition(position_id=position_id)
+    if request.method == 'PUT':
+        statusChange = True
+        user_assign = False
+        position.is_available = statusChange
+
+        time = datetime.datetime.now()
+        position.timeChange = time
+        print("----- t1: ",time)
+
+        position.save()
+        serializer = PositionSerializer(position)
+
+        # Save log in Parka Application Server
+        _saveLogPosition(position_id=position_id, status=statusChange, user_assign=user_assign)
+
+        return JsonResponse(serializer.data)
+        
+
         
 # Private Method
-def _saveLogPosition(position_id, status):
+def _saveLogPosition(position_id, status, user_assign):
     if position_id != None and status != None:
-        path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
-        # path = 'http://localhost:8000/users/saveLog/%s/' % position_id
+        # path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
+        path = 'http://localhost:8000/users/saveLog/%s/' % position_id
         # path = 'http://172.20.118.161:8000/users/saveLog/%s/' % position_id
         print("----- path:", path)
 
@@ -201,7 +226,8 @@ def _saveLogPosition(position_id, status):
             'avg_x':avg_x,
             'avg_y':avg_y,
             'floor_id':floor_id,
-            'timeChange':time,})
+            'timeChange':time,
+            'user_assign':user_assign})
 
         print("------ position: ",position.text)
 
