@@ -153,9 +153,7 @@ def getPositionsByFloor(request, floor_id):
 def carParking(request, position_id):
     position = _getPosition(position_id=position_id)
     if request.method == 'PUT':
-        # statusChange = request.data['is_available']
         statusChange = False
-        user_assign = request.data['user_assign']
         position.is_available = statusChange
 
         time = datetime.datetime.now()
@@ -166,7 +164,7 @@ def carParking(request, position_id):
         serializer = PositionSerializer(position)
         
         # Save log in Parka Application Server
-        _saveLogPosition(position_id=position_id, status=statusChange, user_assign=user_assign)
+        _saveLogPosition(position_id=position_id, status=statusChange)
 
         return JsonResponse(serializer.data)
 
@@ -177,7 +175,6 @@ def carDriveOut(request, position_id):
     position = _getPosition(position_id=position_id)
     if request.method == 'PUT':
         statusChange = True
-        user_assign = False
         position.is_available = statusChange
 
         time = datetime.datetime.now()
@@ -186,16 +183,16 @@ def carDriveOut(request, position_id):
 
         position.save()
         serializer = PositionSerializer(position)
-
+        
         # Save log in Parka Application Server
-        _saveLogPosition(position_id=position_id, status=statusChange, user_assign=user_assign)
+        _saveLogPosition(position_id=position_id, status=statusChange)
 
         return JsonResponse(serializer.data)
         
 
         
 # Private Method
-def _saveLogPosition(position_id, status, user_assign):
+def _saveLogPosition(position_id, status):
     if position_id != None and status != None:
         # path = 'https://applicationserver.parka028.me/users/saveLog/%s/' % position_id
         path = 'http://localhost:8000/users/saveLog/%s/' % position_id
@@ -203,35 +200,13 @@ def _saveLogPosition(position_id, status, user_assign):
         print("----- path:", path)
 
         positionObj = Position.objects.get(position_id=position_id)
-        x = positionObj.x_position
-        y = positionObj.y_position
-        width = positionObj.width_scope
-        height = positionObj.height_scope
         time = positionObj.timeChange
-        avg_x = positionObj.avg_x
-        avg_y = positionObj.avg_y
-
-        # Get FloorId
-        zone = Zone.objects.get(zone_id=positionObj.zone_id)
-        print("---- zone:", zone)
-        floor_id =  zone.floor_id
-        print("---- floor_id", floor_id)
 
         position = requests.post(path, data={
-            'isChangeTo':status,
-            'x_position':x,
-            'y_position':y,
-            'width_scope':width,
-            'height_scope':height,
-            'avg_x':avg_x,
-            'avg_y':avg_y,
-            'floor_id':floor_id,
-            'timeChange':time,
-            'user_assign':user_assign})
+            'is_available':status,
+            'timestamp':time})
 
         print("------ position: ",position.text)
-
-        print("------ Pass this line")
 
         return print("Save log position success!")
 
