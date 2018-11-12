@@ -154,7 +154,12 @@ def carParking(request, position_id):
     position = _getPosition(position_id=position_id)
     if request.method == 'PUT':
         statusChange = False
-        position.is_available = statusChange
+
+        # Check last status of position
+        if position.is_available != statusChange:
+            position.is_available = statusChange
+        else:
+            return HttpResponse("This position have already parked.")
 
         time = datetime.datetime.now()
         position.timeChange = time
@@ -175,7 +180,12 @@ def carDriveOut(request, position_id):
     position = _getPosition(position_id=position_id)
     if request.method == 'PUT':
         statusChange = True
-        position.is_available = statusChange
+        
+        # Check last status of position
+        if position.is_available != statusChange:
+            position.is_available = statusChange
+        else:
+            return HttpResponse("This position have already available.")
 
         time = datetime.datetime.now()
         position.timeChange = time
